@@ -1,20 +1,61 @@
+
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-title>Gastos Personales</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Gastos Personales</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div style="padding:16px;">
+    <h2>Agregar Gasto</h2>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-input [(ngModel)]="newExpense.description" placeholder="Descripción"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Monto</ion-label>
+      <ion-input type="number" [(ngModel)]="newExpense.amount" placeholder="Monto"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-input type="date" [(ngModel)]="newExpense.date"></ion-input>
+    </ion-item>
+    <ion-button expand="block" (click)="addExpense()">Agregar</ion-button>
+
+    <h2 style="margin-top:32px;">Lista de Gastos</h2>
+    <ion-list>
+      <ion-item *ngFor="let expense of expenses">
+        <ion-label>
+          <h3>{{ expense.description }}</h3>
+          <p>Monto: {{ expense.amount }} | Fecha: {{ expense.date | date:'shortDate' }}</p>
+        </ion-label>
+        <ion-button color="primary" (click)="setEdit(expense)">Editar</ion-button>
+        <ion-button color="danger" (click)="deleteExpense(expense._id)">Eliminar</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <div *ngIf="editExpense" style="margin-top:32px;">
+      <h2>Editar Gasto</h2>
+      <ion-item>
+        <ion-label position="stacked">Descripción</ion-label>
+        <ion-input [(ngModel)]="editExpense.description"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Monto</ion-label>
+        <ion-input type="number" [(ngModel)]="editExpense.amount"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Fecha</ion-label>
+        <ion-input type="date" [(ngModel)]="editExpense.date"></ion-input>
+      </ion-item>
+      <ion-button expand="block" (click)="updateExpense()">Guardar Cambios</ion-button>
+      <ion-button expand="block" color="medium" (click)="editExpense = null">Cancelar</ion-button>
+    </div>
   </div>
 </ion-content>

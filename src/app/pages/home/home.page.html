@@ -1,0 +1,60 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Gastos Personales</ion-title>
+    <ion-buttons slot="end" *ngIf="isAuth">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h2>Hola, {{ username }}</h2>
+  <div *ngIf="isAuth">
+
+    <ion-button expand="block" color="success" (click)="openAddModal()">Agregar Gasto</ion-button>
+
+    <ion-modal [isOpen]="showAddModal" (didDismiss)="closeAddModal()">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Agregar Gasto</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input [(ngModel)]="newExpense.description" placeholder="Descripción"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Monto</ion-label>
+            <ion-input type="number" [(ngModel)]="newExpense.amount" placeholder="Monto"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Fecha</ion-label>
+            <ion-input type="date" [(ngModel)]="newExpense.date"></ion-input>
+          </ion-item>
+          <ion-button expand="block" (click)="addExpense()">Guardar</ion-button>
+          <ion-button expand="block" color="medium" (click)="closeAddModal()">Cancelar</ion-button>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
+    <h2 style="margin-top:32px;">Lista de Gastos</h2>
+    <ion-list>
+      <ion-item *ngFor="let expense of expenses">
+        <ion-label>
+          <h3>{{ expense.description }}</h3>
+          <p>Monto: {{ expense.amount }} | Fecha: {{ expense.date | date:'shortDate' }}</p>
+        </ion-label>
+        <ion-button color="primary" (click)="setEdit(expense)">Editar</ion-button>
+  <ion-button color="danger" [disabled]="!expense._id" (click)="deleteExpense(expense._id!)">Eliminar</ion-button>
+      </ion-item>
+    </ion-list>
+
+    <!-- El modal de edición ahora se maneja con ModalController -->
+  </div>
+</ion-content>
