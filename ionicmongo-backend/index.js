@@ -7,6 +7,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.send('API de IonicMongo funcionando');
+});
 app.use('/api', require('./routes/protected'));
 app.use('/api/expenses', require('./routes/expenses'));
 
